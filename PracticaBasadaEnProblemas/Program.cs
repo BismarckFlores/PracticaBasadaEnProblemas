@@ -17,14 +17,35 @@ namespace PracticaBasadaEnProblemas
                 int ninos = 0, jovenes = 0, adultos = 0, mayores = 0;
                 int sumaTotal = 0, sumaNinos = 0, sumaJovenes = 0, sumaAdultos = 0, sumaMayores = 0;
 
-                Console.WriteLine("Ingrese la edad del paciente (o -1 para terminar): ");
+                Console.WriteLine("Ingrese la edad del paciente (no se permiten valores negativos): ");
 
                 for (int i = 0; i < edades.Length; i++)
                 {
-                    Console.Write($"Paciente {i + 1}: ");
-                    edades[i] = Convert.ToInt32(Console.ReadLine());
+                    int edad;
+                    bool edadValida = false;
+
+                    // Bucle de validación
+                    do
+                    {
+                        Console.Write($"Paciente {i + 1}: ");
+                        edad = Convert.ToInt32(Console.ReadLine());
+
+                        if (edad < 0)
+                        {
+                            Console.WriteLine("❌ Error: la edad no puede ser negativa. Intente nuevamente.");
+                        }
+                        else
+                        {
+                            edadValida = true;
+                            edades[i] = edad;
+                        }
+
+                    } while (!edadValida);
+
+                    // Suma total de edades
                     sumaTotal += edades[i];
 
+                    // Clasificación por rango de edad
                     if (edades[i] <= 12)
                     {
                         ninos++;
@@ -56,7 +77,7 @@ namespace PracticaBasadaEnProblemas
 
                 if (mayores > 5)
                 {
-                    Console.WriteLine("Alerta: Más de 5 personas mayores registradas... ¡¡¡ALTO RIESGO!!!");
+                    Console.WriteLine("⚠️ Alerta: Más de 5 personas mayores registradas... ¡¡¡ALTO RIESGO!!!");
                 }
 
                 Console.WriteLine($"\nPromedio de edad total: {(double)sumaTotal / edades.Length:F2}");
@@ -68,7 +89,6 @@ namespace PracticaBasadaEnProblemas
                     Console.WriteLine($"Promedio de edad adultos: {(double)sumaAdultos / adultos:F2}");
                 if (mayores > 0)
                     Console.WriteLine($"Promedio de edad mayores: {(double)sumaMayores / mayores:F2}");
-
             }
             private const int TOTAL_VOTOS = 100;
             private const int TOTAL_CANDIDATOS = 5;
