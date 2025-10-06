@@ -17,35 +17,49 @@ namespace PracticaBasadaEnProblemas
                 int ninos = 0, jovenes = 0, adultos = 0, mayores = 0;
                 int sumaTotal = 0, sumaNinos = 0, sumaJovenes = 0, sumaAdultos = 0, sumaMayores = 0;
 
-                Console.WriteLine("Ingrese la edad del paciente (no se permiten valores negativos): ");
+                Console.WriteLine("Ingrese la edad del paciente (solo números positivos):");
 
                 for (int i = 0; i < edades.Length; i++)
                 {
                     int edad;
                     bool edadValida = false;
 
-                    // Bucle de validación
+                    // Bucle de validación por paciente
                     do
                     {
                         Console.Write($"Paciente {i + 1}: ");
-                        edad = Convert.ToInt32(Console.ReadLine());
+                        string entrada = Console.ReadLine();
 
+                        // Validador de datos nulos
+                        if (string.IsNullOrWhiteSpace(entrada))
+                        {
+                            Console.WriteLine("❌ Error: no se aceptan valores vacíos. Intente nuevamente.");
+                            continue;
+                        }
+
+                        // Validar que sea un número entero
+                        if (!int.TryParse(entrada, out edad))
+                        {
+                            Console.WriteLine("❌ Error: debe ingresar un número entero válido. Intente nuevamente.");
+                            continue;
+                        }
+
+                        // Validar que no sea negativo
                         if (edad < 0)
                         {
                             Console.WriteLine("❌ Error: la edad no puede ser negativa. Intente nuevamente.");
+                            continue;
                         }
-                        else
-                        {
-                            edadValida = true;
-                            edades[i] = edad;
-                        }
+
+                        // Si pasa todas las validaciones, guardar y salir del ciclo
+                        edades[i] = edad;
+                        edadValida = true;
 
                     } while (!edadValida);
 
-                    // Suma total de edades
+                    // Acumulación y clasificación
                     sumaTotal += edades[i];
 
-                    // Clasificación por rango de edad
                     if (edades[i] <= 12)
                     {
                         ninos++;
@@ -68,8 +82,8 @@ namespace PracticaBasadaEnProblemas
                     }
                 }
 
-                //Resultados
-                Console.WriteLine($"\n----Resultados---");
+                // ---- Resultados ----
+                Console.WriteLine("\n---- Resultados ----");
                 Console.WriteLine($"Niños: {ninos}");
                 Console.WriteLine($"Jóvenes: {jovenes}");
                 Console.WriteLine($"Adultos: {adultos}");
@@ -80,6 +94,7 @@ namespace PracticaBasadaEnProblemas
                     Console.WriteLine("⚠️ Alerta: Más de 5 personas mayores registradas... ¡¡¡ALTO RIESGO!!!");
                 }
 
+                // Promedios
                 Console.WriteLine($"\nPromedio de edad total: {(double)sumaTotal / edades.Length:F2}");
                 if (ninos > 0)
                     Console.WriteLine($"Promedio de edad niños: {(double)sumaNinos / ninos:F2}");
